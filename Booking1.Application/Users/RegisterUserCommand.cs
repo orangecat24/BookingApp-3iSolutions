@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Booking1.Application
+namespace Booking1.Application.Users
 {
-    internal class RegisterUserCommand : IRequest<Guid>
+    public class RegisterUserCommand : IRequest<Guid>
     {
-       
+        public CreateUserDto CreateUserDto { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Booking1.Application
+namespace Booking1.Application.Users
 {
     public class CreateUserDto
     {

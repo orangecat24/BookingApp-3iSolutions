@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,6 +11,10 @@ namespace Booking1.Domain.Models
 {
     public class User
     {
+        public User()
+        {
+        }
+
         [Key]
         public Guid Id { get; set; }
 
