@@ -1,4 +1,5 @@
-﻿using Booking1.Application.Users;
+﻿using Booking1.Application.Owners;
+using Booking1.Application.Users2;
 using ClBooking1.Infrastructure.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,8 +25,10 @@ namespace ClBooking1.Infrastructure
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
+
             services.AddScoped<IUserRepository, UserRepository>();
-            
+
+            services.AddScoped<IUserService, UserService>();
 
 
             return services;

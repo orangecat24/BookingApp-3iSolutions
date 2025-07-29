@@ -1,4 +1,4 @@
-using Booking1.Application.Users;
+
 using ClBooking1.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,9 +10,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommandHandler>());
 
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 

@@ -1,5 +1,4 @@
 ﻿using Booking1.Application.Users;
-using Booking1.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Booking1.Application.Users2
 {
-    public interface IUserRepository
+    public interface IUserService
     {
         Task<Guid> RegisterUserAsync(CreateUserDto createUserDto);
-        Task<User?> GetByEmailAsync(string email);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Booking1.Application.Users;
+using Booking1.Application.Users2;
 using Booking1.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,7 @@ namespace ClBooking1.Infrastructure.Users
                 FirstName = createUserDto.FirstName,
                 LastName = createUserDto.LastName,
                 Email = createUserDto.Email,
-                Password = createUserDto.Password, 
+                Password = createUserDto.Password,
                 Country = createUserDto.Country,
                 CreatedOnUtc = DateTime.UtcNow
             };
@@ -34,6 +36,11 @@ namespace ClBooking1.Infrastructure.Users
             await _context.SaveChangesAsync();
 
             return user.Id;
+        }
+
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
     }

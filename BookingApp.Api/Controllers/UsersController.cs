@@ -1,4 +1,6 @@
-﻿using Booking1.Application.Users;
+﻿
+using Booking1.Application.Users;
+using Booking1.Application.Users2;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +11,17 @@ namespace BookingApp.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ISender _sender; 
+        private readonly IUserService _userService;
 
-        public UsersController(ISender sender)
+        public UsersController(IUserService userService)
         {
-            _sender = sender;
+            _userService = userService;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] CreateUserDto dto)
+        public async Task<IActionResult> Register([FromBody] CreateUserDto payload)
         {
-            var command = new RegisterUserCommand { CreateUserDto = dto };
-
-            var userId = await _sender.Send(command);
+            var userId = await _userService.RegisterUserAsync(payload);
 
             return Ok(new { UserId = userId, Message = "User registered successfully." });
         }
