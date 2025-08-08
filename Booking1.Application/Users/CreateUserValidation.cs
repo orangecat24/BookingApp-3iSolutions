@@ -17,16 +17,14 @@ namespace Booking1.Application.Users2
                 .NotEmpty().WithMessage("First name is required.")
                 .MaximumLength(50).WithMessage("First name must be 50 characters or fewer.");
 
-
-
             RuleFor(x => x.LastName)
                 .NotEmpty().WithMessage("Last name is required.")
                 .MaximumLength(50).WithMessage("Last name must be 50 characters or fewer.");
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required.")
-                .EmailAddress().WithMessage("Invalid email format.")
-                .MaximumLength(100).WithMessage("Email must be 100 characters or fewer.");
+                .EmailAddress().WithMessage("Invalid email format.");
+                
 
             RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("Password is required.")

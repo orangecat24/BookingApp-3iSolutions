@@ -1,9 +1,4 @@
 ﻿using Booking1.Application.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Booking1.Application.Users2
 {
@@ -20,9 +15,14 @@ namespace Booking1.Application.Users2
 
         public async Task<Guid> RegisterUserAsync(CreateUserDto createUserDto)
         {
-            
+
             var result = _validator.Validate(createUserDto);
-            
+
+            if (!result.IsValid)
+            {
+                throw new ArgumentException(string.Join(", ", result.Errors.Select(e => e.ErrorMessage)));
+            }
+
             var existingUser = await _userRepository.GetByEmailAsync(createUserDto.Email);
 
 
