@@ -9,6 +9,6 @@ namespace Booking1.Application.Apartments.CreateApartment
         public decimal Price { get; set; }
         public string? Description { get; set; }
         public decimal CleaningFee { get; set; }
-        public Amenity? Amenities { get; set; }
+        public List<Amenity> Amenities { get; set; } = new List<Amenity>();
     }
 }

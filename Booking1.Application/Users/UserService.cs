@@ -1,4 +1,6 @@
 ﻿using Booking1.Application.Users;
+using Booking1.Domain.Enums;
+using Booking1.Domain.Models;
 
 namespace Booking1.Application.Users2
 {
@@ -17,22 +19,40 @@ namespace Booking1.Application.Users2
         {
 
             var result = _validator.Validate(createUserDto);
-
             if (!result.IsValid)
             {
                 throw new ArgumentException(string.Join(", ", result.Errors.Select(e => e.ErrorMessage)));
             }
 
+
             var existingUser = await _userRepository.GetByEmailAsync(createUserDto.Email);
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException($"User wit this email already exists.");
+            }
 
 
-            createUserDto.Password = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password);
+            var user = new User
+            {
+                Id = Guid.NewGuid(),
+                FirstName = createUserDto.FirstName,
+                LastName = createUserDto.LastName,
+                Email = createUserDto.Email.ToLowerInvariant(),
+                Password = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password),
+                Country = createUserDto.Country,
+                CreatedOnUtc = DateTime.UtcNow,
+                Role = UserRole.Guest
+            };
 
-            return await _userRepository.RegisterUserAsync(createUserDto);
+
+            await _userRepository.AddAsync(user);
+            return user.Id;
         }
 
-
-
+        public async Task<User?> GetByIdAsync(Guid id)
+        {
+            return await _userRepository.GetByIdAsync(id);
+        }
 
     }
 }

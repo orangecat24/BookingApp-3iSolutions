@@ -1,16 +1,14 @@
-﻿using Booking1.Application.Owners.CreateOwner;
-using Booking1.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Booking1.Domain.Models;
 
 namespace Booking1.Application.Owners
 {
     public interface IOwnerRepository
     {
-        Task<Guid> RegisterOwnerAsync(CreateOwnerDto createOwnerDto);
+        Task<Guid> AddAsync(User user, Owner owner);
         Task<User?> GetByEmailAsync(string email);
+        Task<Owner?> GetByIdAsync(Guid id);
+        Task<IEnumerable<Owner>> GetAllAsync();
+        Task UpdateAsync(Owner owner);
+        Task DeleteAsync(Owner owner);
     }
 }

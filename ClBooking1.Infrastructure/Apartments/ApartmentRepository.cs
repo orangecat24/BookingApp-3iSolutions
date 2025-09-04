@@ -1,5 +1,6 @@
-﻿using Booking1.Application.Apartments.CreateApartment;
+﻿using Booking1.Application.Apartments;
 using Booking1.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClBooking1.Infrastructure.Apartments
 {
@@ -11,24 +12,39 @@ namespace ClBooking1.Infrastructure.Apartments
         {
             _context = context;
         }
-
-        public async Task<Guid> CreateAsync(CreateApartmentDto dto)
+        public async Task<Guid> AddAsync(Apartment apartment)
         {
-            var apt = new Apartment
-            {
-                Id = Guid.NewGuid(),
-                Name = dto.Name,
-                Address = dto.Address,
-                Price = dto.Price,
-                Description = dto.Description,
-                CleaningFee = dto.CleaningFee,
-                Amenities = dto.Amenities,
-                LastBookedOnUtc = null
-            };
-
-            _context.Apartments.Add(apt);
+            _context.Apartments.Add(apartment);
             await _context.SaveChangesAsync();
-            return apt.Id;
+            return apartment.Id;
+        }
+
+        public async Task<Apartment?> GetByIdAsync(Guid id)
+        {
+            return await _context.Apartments
+                .Include(a => a.ApartmentPhotos)
+                .Include(a => a.Bookings)
+                .FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<IEnumerable<Apartment>> GetAllAsync()
+        {
+            return await _context.Apartments
+                .Include(a => a.ApartmentPhotos)
+                .Include(a => a.Bookings)
+                .ToListAsync();
+        }
+
+        public async Task UpdateAsync(Apartment apartment)
+        {
+            _context.Apartments.Update(apartment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Apartment apartment)
+        {
+            _context.Apartments.Remove(apartment);
+            await _context.SaveChangesAsync();
         }
     }
 }

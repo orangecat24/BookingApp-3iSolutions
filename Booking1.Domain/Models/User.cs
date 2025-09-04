@@ -1,11 +1,6 @@
 ﻿
-using System;
-using System.Collections.Generic;
+using Booking1.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Booking1.Domain.Models
 {
@@ -37,5 +32,8 @@ namespace Booking1.Domain.Models
         public DateTime? UpdatedOnUtc { get; set; }
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+        [Required]
+        public UserRole Role { get; set; }
     }
 }

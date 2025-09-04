@@ -14,6 +14,11 @@ namespace Booking1.Application.Apartments.AddApartmentPhotos
             validator = new AddApartmentPhotoValidator();
         }
 
+        public async Task<List<ApartmentPhoto>> ListPhotosAsync(Guid apartmentId)
+        {
+            return await repository.getPhotosByApartment(apartmentId);
+        }
+
         public async Task<Guid> UploadAsync(Guid apartmentId, AddApartmentPhotoDto dto)
         {
 
@@ -36,6 +41,14 @@ namespace Booking1.Application.Apartments.AddApartmentPhotos
             return await repository.AddAsync(photo);
         }
 
+        public async Task<bool> DeleteAsync(Guid photoId)
+        {
+            return await repository.DeleteAsync(photoId);
+        }
 
+        public async Task<ApartmentPhoto?> GetByIdAsync(Guid photoId)
+        {
+            return await repository.GetPhotoByIdAsync(photoId);
+        }
     }
 }

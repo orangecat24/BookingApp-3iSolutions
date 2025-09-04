@@ -1,5 +1,4 @@
 ﻿using Booking1.Application.Owners;
-using Booking1.Application.Owners.CreateOwner;
 using Booking1.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,39 +13,45 @@ namespace ClBooking1.Infrastructure.Owners
             _context = context;
         }
 
-        public async Task<Guid> RegisterOwnerAsync(CreateOwnerDto dto)
+        public async Task<Guid> AddAsync(User user, Owner owner)
         {
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Email = dto.Email,
-                Password = dto.Password,
-                Country = dto.Country,
-                CreatedOnUtc = DateTime.UtcNow
-            };
-
-            var owner = new Owner
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                IdentityCardNumber = dto.IdentityCardNumber,
-                BankAccount = dto.BankAccount,
-                PhoneNumber = dto.PhoneNumber,
-                User = user
-            };
-
             _context.Users.Add(user);
             _context.Owners.Add(owner);
-            await _context.SaveChangesAsync();
 
+            await _context.SaveChangesAsync();
             return owner.Id;
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var normalized = email.Trim().ToLowerInvariant();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == normalized);
+        }
+
+        public async Task<Owner?> GetByIdAsync(Guid id)
+        {
+            return await _context.Owners
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task<IEnumerable<Owner>> GetAllAsync()
+        {
+            return await _context.Owners
+                .Include(o => o.User)
+                .ToListAsync();
+        }
+
+        public async Task UpdateAsync(Owner owner)
+        {
+            _context.Owners.Update(owner);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Owner owner)
+        {
+            _context.Owners.Remove(owner);
+            await _context.SaveChangesAsync();
         }
     }
 }

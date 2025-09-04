@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Booking1.Domain.Models
 {
@@ -17,12 +12,15 @@ namespace Booking1.Domain.Models
         [ForeignKey("Booking")]
         public Guid BookingId { get; set; }
 
+        [ForeignKey("User")]
+        public Guid UserId { get; set; }
+
         [Range(1, 5)]
         public int Rating { get; set; }
 
         public string? Comment { get; set; }
         public DateTime CreatedOnUtc { get; set; }
-
-        public Booking Booking { get; set; }
+        public Booking Booking { get; set; } = null!;
+        public User User { get; set; } = null!;
     }
 }

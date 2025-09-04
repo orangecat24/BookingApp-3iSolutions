@@ -1,12 +1,6 @@
-﻿using Booking1.Application.Users;
-using Booking1.Application.Users2;
+﻿using Booking1.Application.Users2;
 using Booking1.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClBooking1.Infrastructure.Users
 {
@@ -19,29 +13,23 @@ namespace ClBooking1.Infrastructure.Users
             _context = context;
         }
 
-        public async Task<Guid> RegisterUserAsync(CreateUserDto createUserDto)
+        public async Task AddAsync(User user)
         {
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                FirstName = createUserDto.FirstName,
-                LastName = createUserDto.LastName,
-                Email = createUserDto.Email,
-                Password = createUserDto.Password,
-                Country = createUserDto.Country,
-                CreatedOnUtc = DateTime.UtcNow
-            };
-
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-
-            return user.Id;
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var normalized = email?.Trim().ToLowerInvariant();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == normalized);
         }
+
+        public async Task<User?> GetByIdAsync(Guid id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
 
     }
 }

@@ -24,9 +24,9 @@ namespace Booking1.Application.Apartments.CreateApartment
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("Cleaning fee cannot be negative.");
 
-            RuleFor(x => x.Amenities)
-                .Must(a => a == null || Enum.IsDefined(typeof(Amenity), a.Value))
-                .WithMessage("Invalid amenity selection.");
+            RuleForEach(x => x.Amenities)
+            .Must(a => Enum.IsDefined(typeof(Amenity), a))
+            .WithMessage("Invalid amenity selection.");
         }
     }
 }
